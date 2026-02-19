@@ -204,9 +204,9 @@ function BrowseCategories({ categories = TEMP_CATEGORIES }) {
  return (
   <section className="py-14">
    <Container>
-    <div className="flex items-end justify-between mb-10">
+    <div className="flex items-end flex-wrap justify-between mb-10">
      <SectionTitle label="Categories" title="Browse By Category" />
-     <div className=" flex items-center gap-2">
+     <div className="flex items-center gap-2">
       <ArrowButton direction="left" onClick={() => scroll('left')} />
       <ArrowButton direction="right" onClick={() => scroll('right')} />
      </div>
