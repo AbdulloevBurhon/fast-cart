@@ -48,38 +48,40 @@ function Featured() {
      </div>
 
      {/* Speakers - Маленькая снизу слева */}
-     <div className="md:col-span-1 bg-[#0D0D0D] rounded-sm relative group overflow-hidden flex items-end">
-      <div className="absolute inset-0 flex items-center justify-center p-6">
-       <div className="w-full h-full bg-white/10 blur-3xl absolute rounded-full" />
-       <img
-        src="sp.png"
-        alt="Speakers"
-        className="relative z-10 object-contain w-full h-full"
-       />
-      </div>
-      <div className="relative z-10 p-6 w-full">
-       <h3 className="text-white text-xl font-semibold mb-2">Speakers</h3>
-       <p className="text-gray-200 text-xs mb-3">Amazon wireless speakers</p>
-       <button className="text-white text-sm font-medium border-b border-gray-500 hover:border-white transition-colors">
+     <div className="md:col-span-2 bg-[#0D0D0D] rounded-sm relative group overflow-hidden flex items-end">
+      <img
+       src="dux.png"
+       alt="Women's Collection"
+       className="absolute right-0 top-0 h-full w-auto object-cover transform scale-x-[-1]"
+      />
+      <div className="relative z-10 p-6 w-full md:w-1/2">
+       <h3 className="text-white text-2xl font-semibold mb-2">
+        Women's Collections
+       </h3>
+       <p className="text-gray-200 text-sm mb-4">
+        Featured woman collections that give you another vibe.
+       </p>
+       <button className="text-white font-medium border-b border-gray-500 hover:border-white transition-colors">
         Shop Now
        </button>
       </div>
      </div>
 
      {/* Perfume - Маленькая снизу справа */}
-     <div className="md:col-span-1 bg-[#0D0D0D] rounded-sm relative group overflow-hidden flex items-end">
-      <div className="absolute inset-0 flex items-center justify-center p-6">
-       <div className="w-full h-full bg-white/10 blur-3xl absolute rounded-full" />
-       <img
-        src="dux.png"
-        alt="Perfume"
-        className="relative z-10 object-contain w-full h-full"
-       />
-      </div>
-      <div className="relative z-10 p-6 w-full">
-       <h3 className="text-white text-xl font-semibold mb-2">Perfume</h3>
-       <p className="text-gray-200 text-xs mb-3">GUCCI INTENSE OUD EDP</p>
-       <button className="text-white text-sm font-medium border-b border-gray-500 hover:border-white transition-colors">
+     <div className="md:col-span-2 bg-[#0D0D0D] rounded-sm relative group overflow-hidden flex items-end">
+      <img
+       src="sp.png"
+       alt="Women's Collection"
+       className="absolute right-0 top-0 h-full w-auto object-cover transform scale-x-[-1]"
+      />
+      <div className="relative z-10 p-6 w-full md:w-1/2">
+       <h3 className="text-white text-2xl font-semibold mb-2">
+        Women's Collections
+       </h3>
+       <p className="text-gray-200 text-sm mb-4">
+        Featured woman collections that give you another vibe.
+       </p>
+       <button className="text-white font-medium border-b border-gray-500 hover:border-white transition-colors">
         Shop Now
        </button>
       </div>
