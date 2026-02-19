@@ -1,12 +1,14 @@
+// src/components/productDetails/RelatedProducts.jsx
+
+import { useProducts } from '../../context/ProductsContext'
 import ProductCard from '../product/shared/ProductCard'
 
-function RelatedProducts() {
- const products = [
-  { id: 1, title: 'Gamepad', price: 550, image: '/p3.png' },
-  { id: 2, title: 'Keyboard', price: 200, image: '/p6.png' },
-  { id: 3, title: 'Monitor', price: 370, image: '/p5.png' },
-  { id: 4, title: 'Cooler', price: 160, image: '/p2.png' }
- ]
+function RelatedProducts({ category, currentId }) {
+ const { getByCategory } = useProducts()
+
+ const related = getByCategory(category)
+  .filter((p) => p.id !== currentId)
+  .slice(0, 4)
 
  return (
   <section className="py-20">
@@ -17,7 +19,7 @@ function RelatedProducts() {
     </div>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-     {products.map((product) => (
+     {related.map((product) => (
       <ProductCard key={product.id} {...product} />
      ))}
     </div>
