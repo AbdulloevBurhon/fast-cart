@@ -1,5 +1,6 @@
 import { default as Categories } from '../../components/home/categories/Categories'
 import HeroCategories from '../../components/home/categoriesBanner/HeroCategories'
+import Featured from '../../components/home/featured/Featured'
 import HomeTop from '../../components/home/hero/HomeTop'
 import OurProducts from '../../components/home/ourProducts/OurProducts'
 import Services from '../../components/home/services/Services'
@@ -15,6 +16,7 @@ function Home() {
    <ThisMonth />
    <HeroCategories />
    <OurProducts />
+   <Featured />
    <Services />
   </>
  )
