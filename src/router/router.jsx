@@ -13,7 +13,7 @@ import NotFound from '../pages/NotFound/NotFound'
 import ProductDetails from '../pages/ProductDetails/ProductDetails'
 import Products from '../pages/Products/Products'
 import SignUp from '../pages/SignUp/SignUp'
-import Wishlist from '../pages/Wishlist/WishList'
+import Wishlist from '../pages/Wishlist/Wishlist'
 
 export const router = createBrowserRouter([
  {
