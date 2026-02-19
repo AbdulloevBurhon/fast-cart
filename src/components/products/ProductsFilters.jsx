@@ -1,5 +1,5 @@
 // src/components/products/filters/ProductsFilters.jsx
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const CATEGORIES = [
  'All products',
@@ -18,21 +18,70 @@ const FEATURES = [
 ]
 const CONDITIONS = ['Any', 'Refurbished', 'Brand new', 'Old items']
 
-function ChevronUp() {
+/* ── Animated collapsible section ── */
+function Section({ title, defaultOpen = false, children }) {
+ const [open, setOpen] = useState(defaultOpen)
+ const bodyRef = useRef(null)
+ const [height, setHeight] = useState(defaultOpen ? 'auto' : '0px')
+
+ useEffect(() => {
+  if (!bodyRef.current) return
+  if (open) {
+   // measure content height then animate to it
+   const h = bodyRef.current.scrollHeight
+   setHeight(`${h}px`)
+   // after transition ends, set to auto so it adjusts if content changes
+   const timer = setTimeout(() => setHeight('auto'), 300)
+   return () => clearTimeout(timer)
+  } else {
+   // snapshot current height before collapsing
+   const h = bodyRef.current.scrollHeight
+   setHeight(`${h}px`)
+   // force reflow
+   bodyRef.current.getBoundingClientRect()
+   setHeight('0px')
+  }
+ }, [open])
+
  return (
-  <svg
-   width="14"
-   height="14"
-   viewBox="0 0 24 24"
-   fill="none"
-   stroke="#888"
-   strokeWidth="2"
-  >
-   <polyline points="18 15 12 9 6 15" />
-  </svg>
+  <div style={{ borderBottom: '1px solid #EBEBEB' }}>
+   <button
+    onClick={() => setOpen((v) => !v)}
+    className="w-full flex justify-between items-center py-5 text-left"
+   >
+    <span className="font-semibold text-sm text-gray-900">{title}</span>
+    <svg
+     width="14"
+     height="14"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="#888"
+     strokeWidth="2"
+     style={{
+      transition: 'transform 0.25s ease',
+      transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
+      flexShrink: 0
+     }}
+    >
+     <polyline points="18 15 12 9 6 15" />
+    </svg>
+   </button>
+
+   <div
+    ref={bodyRef}
+    style={{
+     overflow: 'hidden',
+     height,
+     transition: 'height 0.3s ease'
+    }}
+   >
+    <div className="pb-5">{children}</div>
+   </div>
+  </div>
  )
 }
 
+/* ── Stars ── */
 function StarRow({ n }) {
  return (
   <div className="flex gap-0.5">
@@ -52,18 +101,7 @@ function StarRow({ n }) {
  )
 }
 
-function Section({ title, children }) {
- return (
-  <div className="py-5" style={{ borderBottom: '1px solid #EBEBEB' }}>
-   <div className="flex justify-between items-center mb-3">
-    <span className="font-semibold text-sm text-gray-900">{title}</span>
-    <ChevronUp />
-   </div>
-   {children}
-  </div>
- )
-}
-
+/* ── Main filters component ── */
 export default function ProductsFilters() {
  const [selectedCat, setSelectedCat] = useState('All products')
  const [brandChecks, setBrandChecks] = useState({})
@@ -172,14 +210,13 @@ export default function ProductsFilters() {
        right: `${100 - (priceMax / 400) * 100}%`
       }}
      />
-     {/* thumbs visual */}
      <div
       className="absolute w-4 h-4 rounded-full bg-white border-2 pointer-events-none"
       style={{
        borderColor: '#DB4444',
        left: `${(priceMin / 400) * 100}%`,
        top: '50%',
-       transform: 'translate(-50%, -50%)'
+       transform: 'translate(-50%,-50%)'
       }}
      />
      <div
@@ -188,7 +225,7 @@ export default function ProductsFilters() {
        background: '#DB4444',
        left: `${(priceMax / 400) * 100}%`,
        top: '50%',
-       transform: 'translate(-50%, -50%)'
+       transform: 'translate(-50%,-50%)'
       }}
      />
      <input
@@ -249,11 +286,7 @@ export default function ProductsFilters() {
    </Section>
 
    {/* Ratings */}
-   <div className="pt-5">
-    <div className="flex justify-between items-center mb-3">
-     <span className="font-semibold text-sm text-gray-900">Ratings</span>
-     <ChevronUp />
-    </div>
+   <Section title="Ratings">
     <ul className="space-y-2.5">
      {[5, 4, 3, 2].map((n) => (
       <li key={n} className="flex items-center gap-2.5">
@@ -270,7 +303,7 @@ export default function ProductsFilters() {
       </li>
      ))}
     </ul>
-   </div>
+   </Section>
   </div>
  )
 }

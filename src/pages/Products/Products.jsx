@@ -755,9 +755,10 @@
 //   </div>
 //  )
 // }
-
 // src/pages/Products.jsx
-import { useState } from 'react'
+// src/pages/Products.jsx
+import { useEffect, useState } from 'react'
+
 import ProductsFilters from '../../components/products/ProductsFilters'
 import ProductsHeader from '../../components/products/ProductsHeader'
 import ProductsMain from '../../components/products/ProductsMain'
@@ -765,10 +766,29 @@ import ProductsToolbar from '../../components/products/ProductsToolbar'
 
 export default function Products() {
  const [showMobileFilter, setShowMobileFilter] = useState(false)
+ const [drawerVisible, setDrawerVisible] = useState(false)
  const [activeTags, setActiveTags] = useState(['All products', 'Any'])
  const [sortValue, setSortValue] = useState('Popular')
 
  const removeTag = (tag) => setActiveTags((p) => p.filter((t) => t !== tag))
+
+ /* open: mount then animate in; close: animate out then unmount */
+ const openDrawer = () => {
+  setShowMobileFilter(true)
+  setTimeout(() => setDrawerVisible(true), 10)
+ }
+ const closeDrawer = () => {
+  setDrawerVisible(false)
+  setTimeout(() => setShowMobileFilter(false), 320)
+ }
+
+ /* lock body scroll while drawer is open */
+ useEffect(() => {
+  document.body.style.overflow = showMobileFilter ? 'hidden' : ''
+  return () => {
+   document.body.style.overflow = ''
+  }
+ }, [showMobileFilter])
 
  return (
   <div className="bg-white min-h-screen font-sans text-gray-900">
@@ -793,36 +813,63 @@ export default function Products() {
      <ProductsToolbar
       activeTags={activeTags}
       onRemoveTag={removeTag}
-      onOpenFilter={() => setShowMobileFilter(true)}
+      onOpenFilter={openDrawer}
      />
      <ProductsMain isMobile />
     </div>
 
-    {/* Drawer */}
+    {/* ── Drawer: slides from RIGHT ── */}
     {showMobileFilter && (
-     <div className="fixed inset-0 z-50 flex">
+     <div className="fixed inset-0 z-50 flex justify-end pointer-events-none">
+      {/* overlay */}
       <div
-       className="flex-1 bg-black bg-opacity-50"
-       onClick={() => setShowMobileFilter(false)}
+       className="absolute inset-0 pointer-events-auto"
+       style={{
+        background: 'rgba(0,0,0,0.15)',
+        opacity: drawerVisible ? 1 : 0,
+        transition: 'opacity 0.3s ease'
+       }}
+       onClick={closeDrawer}
       />
-      <div className="w-72 bg-white h-full overflow-y-auto p-5 shadow-2xl">
-       <div className="flex justify-between items-center mb-5">
-        <span className="font-bold text-base">Filters</span>
-        <button onClick={() => setShowMobileFilter(false)}>
+
+      {/* Drawer panel */}
+      <div
+       className="relative pointer-events-auto bg-white h-full overflow-y-auto shadow-2xl"
+       style={{
+        width: 280,
+        transform: drawerVisible ? 'translateX(0)' : 'translateX(100%)',
+        transition: 'transform 0.3s cubic-bezier(0.4,0,0.2,1)'
+       }}
+      >
+       {/* Header */}
+       <div
+        className="flex justify-between items-center px-5 py-4 sticky top-0 bg-white z-10"
+        style={{ borderBottom: '1px solid #F0F0F0' }}
+       >
+        <span className="font-bold text-base text-gray-900">Filters</span>
+        <button
+         onClick={closeDrawer}
+         className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+        >
          <svg
-          width="18"
-          height="18"
+          width="16"
+          height="16"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#333"
-          strokeWidth="2"
+          stroke="#555"
+          strokeWidth="2.5"
+          strokeLinecap="round"
          >
           <line x1="18" y1="6" x2="6" y2="18" />
           <line x1="6" y1="6" x2="18" y2="18" />
          </svg>
         </button>
        </div>
-       <ProductsFilters />
+
+       {/* Filters content */}
+       <div className="px-5 pb-8">
+        <ProductsFilters />
+       </div>
       </div>
      </div>
     )}
