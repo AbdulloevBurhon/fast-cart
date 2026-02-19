@@ -40,7 +40,7 @@ function ThisMonth() {
       </Link>
 
       {/* Добавляем кнопки управления скроллом */}
-      <div className="hidden md:flex items-center gap-2">
+      <div className="flex items-center gap-2">
        <ArrowButton direction="left" onClick={() => handleScroll('left')} />
        <ArrowButton direction="right" onClick={() => handleScroll('right')} />
       </div>

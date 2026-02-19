@@ -31,7 +31,7 @@ function TodayProducts() {
       <SectionTitle label="Today's" title="Flash Sales" />
       <Timer targetDate={saleEnd} />
      </div>
-     <div className="hidden md:flex items-center gap-2 pb-1">
+     <div className="flex items-center gap-2 pb-1">
       <ArrowButton direction="left" onClick={() => handleScroll('left')} />
       <ArrowButton direction="right" onClick={() => handleScroll('right')} />
      </div>

@@ -31,7 +31,7 @@ function OurProducts() {
      <SectionTitle label="Our Products" title="Explore Our Products" />
 
      {/* Стрелки навигации (карусель) */}
-     <div className="hidden md:flex items-center gap-2">
+     <div className="flex items-center gap-2">
       <ArrowButton direction="left" onClick={() => handleScroll('left')} />
       <ArrowButton direction="right" onClick={() => handleScroll('right')} />
      </div>
