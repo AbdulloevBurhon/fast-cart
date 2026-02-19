@@ -22,7 +22,7 @@ function TodayProducts() {
    behavior: 'smooth'
   })
  }
-
+ //
  return (
   <section className="py-14">
    <Container>
