@@ -67,7 +67,7 @@ function Featured() {
       </div>
      </div>
 
-     {/* Perfume - Маленькая снизу справа */}
+     {/* Perfume - Маленькая снизу справа dasdsadsa*/}
      <div className="md:col-span-2 bg-[#0D0D0D] rounded-sm relative group overflow-hidden flex items-end">
       <img
        src="sp.png"
