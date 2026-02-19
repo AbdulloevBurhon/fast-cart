@@ -26,7 +26,7 @@ function TodayProducts() {
  return (
   <section className="py-14">
    <Container>
-    <div className="flex items-end justify-between gap-4 mb-8">
+    <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
      <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-20">
       <SectionTitle label="Today's" title="Flash Sales" />
       <Timer targetDate={saleEnd} />
