@@ -10,7 +10,6 @@ function Section({ title, forceOpen = false, children }) {
  const bodyRef = useRef(null)
  const [height, setHeight] = useState(forceOpen ? 'auto' : '0px')
 
- // если forceOpen изменился (например при заходе с Home)
  useEffect(() => {
   setOpen(forceOpen)
  }, [forceOpen])
@@ -77,6 +76,9 @@ export default function ProductsFilters({ filters, setFilters }) {
 
  const selectedCategory = searchParams.get('category')
 
+ const [priceMin, setPriceMin] = useState(filters.minPrice)
+ const [priceMax, setPriceMax] = useState(filters.maxPrice)
+
  /* ===== Динамические категории ===== */
  const categories = useMemo(() => {
   return ['All products', ...new Set(products.map((p) => p.category))]
@@ -121,7 +123,6 @@ export default function ProductsFilters({ filters, setFilters }) {
      })}
     </ul>
    </Section>
-
    {/* ================= BRANDS ================= */}
    <Section title="Brands">
     <ul className="space-y-2.5">
@@ -148,7 +149,30 @@ export default function ProductsFilters({ filters, setFilters }) {
      ))}
     </ul>
    </Section>
+   {/* ПРАЙСССССССС */}
+   <Section title="Price range">
+    <div className="flex justify-between text-xs text-gray-400 mb-4">
+     <span>${filters.minPrice}</span>
+     <span>${filters.maxPrice}</span>
+    </div>
 
+    <input
+     type="range"
+     min="0"
+     max="2000"
+     value={filters.maxPrice}
+     onChange={(e) => {
+      const value = Number(e.target.value)
+
+      setFilters((prev) => ({
+       ...prev,
+       minPrice: 0,
+       maxPrice: value
+      }))
+     }}
+     className="w-full"
+    />
+   </Section>
    {/* ================= RATING ================= */}
    <Section title="Ratings">
     <ul className="space-y-2.5">

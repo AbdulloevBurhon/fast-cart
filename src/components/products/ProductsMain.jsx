@@ -20,7 +20,10 @@ export default function ProductsMain({ filters }) {
   }
 
   result = result.filter(
-   (p) => p.price >= filters.minPrice && p.price <= filters.maxPrice
+   (p) =>
+    typeof p.price === 'number' &&
+    p.price >= filters.minPrice &&
+    p.price <= filters.maxPrice
   )
 
   if (filters.rating) {
