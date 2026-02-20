@@ -47,7 +47,7 @@ function ProductCard({
 
  return (
   <div className="group w-full flex-shrink-0">
-   <div className="relative bg-[#F5F5F5] aspect-square flex items-center justify-center overflow-hidden rounded-sm">
+   <div className="relative bg-[#F5F5F5] aspect-square flex items-center justify-center overflow-hidden rounded-sm transition-all duration-300 hover:shadow-md">
     {/* Badge */}
     <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
      {discount && (
@@ -56,7 +56,7 @@ function ProductCard({
       </span>
      )}
      {isNew && !discount && (
-      <span className="bg-[#00FF66] text-red-700 text-[10px] px-2 py-1 rounded font-medium">
+      <span className="bg-[#00FF66] text-black text-[10px] px-2 py-1 rounded font-medium">
        New
       </span>
      )}
@@ -69,25 +69,25 @@ function ProductCard({
        e.preventDefault()
        toggleWishlist({ id, image, title, price })
       }}
-      className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-[#DB4444] hover:text-white transition-colors"
+      className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center shadow-sm transition-colors hover:bg-[#DB4444] hover:text-white"
      >
-      <Heart size="20" fill={isWished ? 'red' : 'none'} />
+      <Heart size={20} fill={isWished ? 'currentColor' : 'none'} />
      </button>
 
      <Link
       to={`/products/${id}`}
-      className="w-7 h-7 bg-gray-200  rounded-full flex items-center justify-center shadow-sm hover:bg-[#DB4444] hover:text-white transition-colors"
+      className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center shadow-sm transition-colors hover:bg-[#DB4444] hover:text-white"
      >
-      <Eye size="20" />
+      <Eye size={20} />
      </Link>
     </div>
 
-    {/* Image — fills full container, no padding */}
+    {/* Image */}
     <Link to={`/products/${id}`} className="block w-full h-full">
      <img
       src={image}
       alt={title}
-      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
      />
     </Link>
 
@@ -99,7 +99,7 @@ function ProductCard({
         e.preventDefault()
         addToCart({ id, image, name: title, price })
        }}
-       className="w-full bg-gray-200  text-balck-200 text-sm font-medium py-2.5 hover:bg-gray-800 hover:text-white transition-colors"
+       className="w-full bg-gray-200 text-black text-sm font-medium py-2.5 transition-colors hover:bg-[#DB4444] hover:text-white"
       >
        Add To Cart
       </button>
@@ -109,7 +109,7 @@ function ProductCard({
 
    {/* Info */}
    <div className="mt-4 flex flex-col gap-2">
-    <h3 className="text-sm font-semibold line-clamp-1 group-hover:text-[#DB4444] transition-colors">
+    <h3 className="text-sm font-semibold line-clamp-1 transition-colors group-hover:text-[#DB4444]">
      {title}
     </h3>
 

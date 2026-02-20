@@ -1,57 +1,38 @@
-// HomeTop.jsx
-//
-// Логика поиска вынесена в: hooks/useSearch.js
-// Логика слайдера вынесена в: hooks/useHeroSlider.js (используется внутри Hero)
-
 import { Search } from 'lucide-react'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useProducts } from '../../../context/ProductsContext'
 import Container from '../../ui/Container'
 import { useSearch } from '../hooks/useSearch'
 import Hero from './Hero'
 
-// ─── TEMP: убрать когда будет бэкенд ───────────────────────────────────────
-const TEMP_CATEGORIES = [
- { label: "Woman's Fashion", groupId: 'womans-fashion', hasArrow: true },
- { label: "Men's Fashion", groupId: 'mens-fashion', hasArrow: true },
- { label: 'Electronics', groupId: 'electronics', hasArrow: false },
- { label: 'Home & Lifestyle', groupId: 'home-lifestyle', hasArrow: false },
- { label: 'Medicine', groupId: 'medicine', hasArrow: false },
- { label: 'Sports & Outdoor', groupId: 'sports-outdoor', hasArrow: false },
- { label: "Baby's & Toys", groupId: 'babies-toys', hasArrow: false },
- { label: 'Groceries & Pets', groupId: 'groceries-pets', hasArrow: false },
- { label: 'Health & Beauty', groupId: 'health-beauty', hasArrow: false }
-]
-// ───────────────────────────────────────────────────────────────────────────
-
-function ChevronRight() {
- return (
-  <svg
-   width="14"
-   height="14"
-   viewBox="0 0 24 24"
-   fill="none"
-   stroke="currentColor"
-   strokeWidth="2"
-   strokeLinecap="round"
-   strokeLinejoin="round"
-  >
-   <path d="M9 18l6-6-6-6" />
-  </svg>
- )
-}
-
-function HomeTop({ categories = TEMP_CATEGORIES }) {
- // ← Вся логика поиска здесь
+function HomeTop() {
  const { query, setQuery, handleSearch, handleKeyDown } = useSearch()
  const navigate = useNavigate()
+ const { getCategories } = useProducts()
 
- const handleCategory = (groupId) => navigate(`/category/${groupId}`)
+ const categories = getCategories()
+
+ // ✅ оптимизированная фильтрация
+ const visibleCategories = useMemo(() => {
+  if (!query.trim()) return categories
+
+  return categories.filter((cat) =>
+   cat.toLowerCase().includes(query.toLowerCase())
+  )
+ }, [query, categories])
+
+ const handleCategory = (category) => {
+  navigate(`/products?category=${category}`)
+  setQuery('')
+ }
 
  return (
   <section className="w-full py-4 md:py-6">
    <Container>
-    {/* ─── MOBILE ─── */}
+    {/* ================= MOBILE ================= */}
     <div className="md:hidden flex flex-col gap-3">
+     {/* SEARCH */}
      <div className="relative">
       <input
        type="text"
@@ -69,25 +50,29 @@ function HomeTop({ categories = TEMP_CATEGORIES }) {
       </button>
      </div>
 
-     <div className="flex flex-wrap gap-2">
-      {categories.map((cat) => (
-       <button
-        key={cat.groupId}
-        onClick={() => handleCategory(cat.groupId)}
-        className="flex items-center gap-1 px-3 py-1.5 border border-gray-300 rounded text-sm text-gray-800 hover:bg-gray-50 transition-colors whitespace-nowrap"
-       >
-        {cat.label}
-        {cat.hasArrow && <ChevronRight />}
-       </button>
-      ))}
+     {/* CATEGORY FLEX */}
+     <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
+      {visibleCategories.length > 0
+       ? visibleCategories.map((cat) => (
+          <button
+           key={cat}
+           onClick={() => handleCategory(cat)}
+           className="px-3 py-1.5 border border-gray-300 rounded text-sm text-gray-800 hover:bg-gray-50 transition-colors whitespace-nowrap"
+          >
+           {cat}
+          </button>
+         ))
+       : query && <p className="text-sm text-gray-400">No categories found</p>}
      </div>
 
      <Hero />
     </div>
 
-    {/* ─── DESKTOP ─── */}
+    {/* ================= DESKTOP ================= */}
     <div className="hidden md:flex w-full gap-6">
+     {/* LEFT COLUMN */}
      <div className="w-[220px] flex-shrink-0 border-r border-gray-200 pr-6 flex flex-col gap-4">
+      {/* SEARCH */}
       <div className="relative">
        <input
         type="text"
@@ -105,25 +90,25 @@ function HomeTop({ categories = TEMP_CATEGORIES }) {
        </button>
       </div>
 
-      <ul className="flex flex-col gap-0.5">
-       {categories.map((cat) => (
-        <li key={cat.groupId}>
-         <button
-          onClick={() => handleCategory(cat.groupId)}
-          className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-700 hover:text-black hover:bg-gray-50 rounded transition-colors group"
-         >
-          <span>{cat.label}</span>
-          {cat.hasArrow && (
-           <span className="opacity-50 group-hover:opacity-100">
-            <ChevronRight />
-           </span>
+      {/* CATEGORY LIST */}
+      <div className="flex flex-col gap-1 max-h-64 overflow-y-auto">
+       {visibleCategories.length > 0
+        ? visibleCategories.map((cat) => (
+           <button
+            key={cat}
+            onClick={() => handleCategory(cat)}
+            className="text-left px-3 py-2 text-sm text-gray-700 hover:text-black hover:bg-gray-50 rounded transition-colors"
+           >
+            {cat}
+           </button>
+          ))
+        : query && (
+           <p className="text-sm text-gray-400 px-2">No categories found</p>
           )}
-         </button>
-        </li>
-       ))}
-      </ul>
+      </div>
      </div>
 
+     {/* RIGHT SIDE */}
      <div className="flex-1 min-w-0">
       <Hero />
      </div>

@@ -1,35 +1,51 @@
-// src/components/products/ProductsMain.jsx
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useProducts } from '../../context/ProductsContext'
 import ProductGrid from '../product/shared/ProductGrid'
 
 const PAGE_SIZE = 12
 
-export default function ProductsMain({ isMobile = false }) {
+export default function ProductsMain({ filters }) {
  const { products } = useProducts()
  const [visible, setVisible] = useState(PAGE_SIZE)
 
- const shown = products.slice(0, visible)
- const hasMore = visible < products.length
+ const filteredProducts = useMemo(() => {
+  let result = products.filter(Boolean)
+
+  if (filters.category) {
+   result = result.filter((p) => p.category === filters.category)
+  }
+
+  if (filters.brands.length > 0) {
+   result = result.filter((p) => filters.brands.includes(p.brand))
+  }
+
+  result = result.filter(
+   (p) => p.price >= filters.minPrice && p.price <= filters.maxPrice
+  )
+
+  if (filters.rating) {
+   result = result.filter((p) => p.rating >= filters.rating)
+  }
+
+  return result
+ }, [products, filters])
+
+ useEffect(() => {
+  setVisible(PAGE_SIZE)
+ }, [filters])
+
+ const shown = filteredProducts.slice(0, visible)
+ const hasMore = visible < filteredProducts.length
 
  return (
   <div>
-   {/*
-        isSlider={false}  → grid layout (grid-cols-2 lg:grid-cols-4)
-        On the desktop the aside is 220px, so lg:grid-cols-3 fits better.
-        We override with a wrapper that caps at 3 cols on lg when not mobile.
-      */}
-   <div className={isMobile ? '' : '[&>div]:lg:grid-cols-3'}>
-    <ProductGrid products={shown} isSlider={false} showAddToCart={true} />
-   </div>
+   <ProductGrid products={shown} isSlider={false} showAddToCart />
 
    {hasMore && (
-    <div className={`flex mt-8 ${isMobile ? '' : 'justify-center'}`}>
+    <div className="flex justify-center mt-8">
      <button
       onClick={() => setVisible((v) => v + PAGE_SIZE)}
-      className={`py-3 rounded text-white font-semibold text-sm hover:opacity-90 transition ${
-       isMobile ? 'w-full' : 'px-12'
-      }`}
+      className="py-3 px-12 rounded text-white font-semibold text-sm hover:opacity-90 transition"
       style={{ background: '#DB4444' }}
      >
       More Products
