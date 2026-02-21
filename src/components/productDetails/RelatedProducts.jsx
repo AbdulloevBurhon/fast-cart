@@ -1,12 +1,13 @@
 // src/components/productDetails/RelatedProducts.jsx
 
-import { useProducts } from '../../context/ProductsContext'
+import { useSelector } from 'react-redux'
 import ProductCard from '../product/shared/ProductCard'
 
 function RelatedProducts({ category, currentId }) {
- const { getByCategory } = useProducts()
+ const products = useSelector((state) => state.products.items)
 
- const related = getByCategory(category)
+ const related = products
+  .filter((p) => p.category === category)
   .filter((p) => p.id !== currentId)
   .slice(0, 4)
 

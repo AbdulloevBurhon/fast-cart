@@ -1,14 +1,15 @@
 // src/components/home/OurProducts.jsx
+
 import { useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { useProducts } from '../../../context/ProductsContext'
 import ProductGrid from '../../product/shared/ProductGrid'
 import ArrowButton from '../../ui/ArrowButton'
 import Container from '../../ui/Container'
 import SectionTitle from '../../ui/SectionTitle'
 
 function OurProducts() {
- const { products } = useProducts()
+ const products = useSelector((state) => state.products.items)
  const scrollRef = useRef(null)
 
  // Берем первые 8 товаров
@@ -16,7 +17,7 @@ function OurProducts() {
 
  const handleScroll = (dir) => {
   if (!scrollRef.current) return
-  const scrollAmount = 300 // Скорость/дистанция прокрутки
+  const scrollAmount = 300
   scrollRef.current.scrollBy({
    left: dir === 'left' ? -scrollAmount : scrollAmount,
    behavior: 'smooth'
@@ -37,9 +38,6 @@ function OurProducts() {
      </div>
     </div>
 
-    {/* Передаем isSlider={true}, чтобы включить режим прокрутки (карусель).
-          scrollRef нужен для управления прокруткой через кнопки.
-        */}
     <ProductGrid
      products={displayedProducts}
      scrollRef={scrollRef}

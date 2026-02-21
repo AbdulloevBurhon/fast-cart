@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-import { getProducts } from '../../api/api'
 import ProductsFilters from '../../components/products/ProductsFilters'
 import ProductsHeader from '../../components/products/ProductsHeader'
 import ProductsMain from '../../components/products/ProductsMain'
@@ -11,12 +9,7 @@ export default function Products() {
  const [searchParams] = useSearchParams()
  const [showMobileFilter, setShowMobileFilter] = useState(false)
  const [drawerVisible, setDrawerVisible] = useState(false)
- const { products } = useSelector((state) => state.products)
- const dispatch = useDispatch()
- useEffect(() => {
-  dispatch(getProducts())
- }, [dispatch])
- console.log(products)
+
  const [filters, setFilters] = useState({
   category: null,
   brands: [],

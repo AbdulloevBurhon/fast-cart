@@ -1,7 +1,7 @@
 // src/pages/ProductDetails.jsx
 
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { useProducts } from '../../context/ProductsContext'
 
 import DeliveryInfo from '../../components/productDetails/DeliveryInfo'
 import ProductActions from '../../components/productDetails/ProductActions'
@@ -12,9 +12,10 @@ import RelatedProducts from '../../components/productDetails/RelatedProducts'
 
 function ProductDetails() {
  const { id } = useParams()
- const { getById } = useProducts()
 
- const product = getById(Number(id))
+ const products = useSelector((state) => state.products.items)
+
+ const product = products.find((p) => p.id === Number(id))
 
  if (!product) {
   return <div className="p-20 text-center">Product not found</div>

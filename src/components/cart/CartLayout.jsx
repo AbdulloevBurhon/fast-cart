@@ -1,20 +1,23 @@
-import { useState } from 'react'
-import { useCart } from '../../context/CartContext'
+import { useSelector } from 'react-redux'
 import CartPage from './CartPage'
 
 export default function CartLayout() {
- const { cart, updateQty, removeItem, removeAll, subtotal } = useCart()
- const [coupon, setCoupon] = useState('')
+ const items = useSelector((state) => state.cart.items)
+
+ const subtotal = items.reduce(
+  (sum, item) => sum + item.price * item.quantity,
+  0
+ )
 
  return (
   <CartPage
-   items={cart}
-   updateQty={updateQty}
-   removeItem={removeItem}
-   removeAll={removeAll}
+   items={items}
    subtotal={subtotal}
-   coupon={coupon}
-   setCoupon={setCoupon}
+   updateQty={() => {}}
+   removeItem={() => {}}
+   removeAll={() => {}}
+   coupon=""
+   setCoupon={() => {}}
   />
  )
 }

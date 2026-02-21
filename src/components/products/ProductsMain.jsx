@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useProducts } from '../../context/ProductsContext'
+import { useSelector } from 'react-redux'
 import ProductGrid from '../product/shared/ProductGrid'
 
 const PAGE_SIZE = 12
 
 export default function ProductsMain({ filters }) {
- const { products } = useProducts()
+ const products = useSelector((state) => state.products.items)
+
  const [visible, setVisible] = useState(PAGE_SIZE)
 
  const filteredProducts = useMemo(() => {

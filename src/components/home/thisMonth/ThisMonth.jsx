@@ -1,17 +1,16 @@
 import { useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useProducts } from '../../../context/ProductsContext'
 import ProductGrid from '../../product/shared/ProductGrid'
 import ArrowButton from '../../ui/ArrowButton'
 import Container from '../../ui/Container'
 import SectionTitle from '../../ui/SectionTitle'
 
 function ThisMonth() {
- const { getBestSellers } = useProducts()
+ const products = useSelector((state) => state.products.items)
  const scrollRef = useRef(null)
 
- const displayed = getBestSellers().slice(0, 8)
- console.log('Best Sellers:', displayed)
+ const displayed = products.filter((p) => p.isBestSeller).slice(0, 8)
 
  const handleScroll = (dir) => {
   if (!scrollRef.current) return
@@ -48,4 +47,5 @@ function ThisMonth() {
   </section>
  )
 }
+
 export default ThisMonth

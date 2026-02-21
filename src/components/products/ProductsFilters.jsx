@@ -1,8 +1,8 @@
 // src/components/products/ProductsFilters.jsx
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-import { useProducts } from '../../context/ProductsContext'
 
 /* ── Animated collapsible section ── */
 function Section({ title, forceOpen = false, children }) {
@@ -71,13 +71,13 @@ function Section({ title, forceOpen = false, children }) {
 /* ───────────────────────────────── */
 
 export default function ProductsFilters({ filters, setFilters }) {
- const { products } = useProducts()
+ const products = useSelector((state) => state.products.items)
  const [searchParams, setSearchParams] = useSearchParams()
 
  const selectedCategory = searchParams.get('category')
 
- const [priceMin, setPriceMin] = useState(filters.minPrice)
- const [priceMax, setPriceMax] = useState(filters.maxPrice)
+ const [priceMin] = useState(filters.minPrice)
+ const [priceMax] = useState(filters.maxPrice)
 
  /* ===== Динамические категории ===== */
  const categories = useMemo(() => {
@@ -123,6 +123,7 @@ export default function ProductsFilters({ filters, setFilters }) {
      })}
     </ul>
    </Section>
+
    {/* ================= BRANDS ================= */}
    <Section title="Brands">
     <ul className="space-y-2.5">
@@ -149,7 +150,8 @@ export default function ProductsFilters({ filters, setFilters }) {
      ))}
     </ul>
    </Section>
-   {/* ПРАЙСССССССС */}
+
+   {/* ================= PRICE ================= */}
    <Section title="Price range">
     <div className="flex justify-between text-xs text-gray-400 mb-4">
      <span>${filters.minPrice}</span>
@@ -173,6 +175,7 @@ export default function ProductsFilters({ filters, setFilters }) {
      className="w-full"
     />
    </Section>
+
    {/* ================= RATING ================= */}
    <Section title="Ratings">
     <ul className="space-y-2.5">

@@ -1,15 +1,9 @@
 import { Heart } from 'lucide-react'
 import { useState } from 'react'
-import { useCart } from '../../context/CartContext'
-import { useWishlist } from '../../context/WishlistContext'
 
 function ProductActions({ product }) {
- const { addToCart } = useCart()
- const { wishlist, toggleWishlist } = useWishlist()
-
  const [quantity, setQuantity] = useState(1)
-
- const isWished = wishlist.some((p) => p.id === product.id)
+ const [isWished, setIsWished] = useState(false)
 
  return (
   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
@@ -36,7 +30,7 @@ function ProductActions({ product }) {
 
    {/* BUY NOW */}
    <button
-    onClick={() => addToCart({ ...product, quantity })}
+    onClick={() => console.log('Buy:', product, 'Qty:', quantity)}
     className="h-11 px-10 bg-red-500 text-white rounded hover:bg-red-600 transition font-medium"
    >
     Buy Now
@@ -44,7 +38,7 @@ function ProductActions({ product }) {
 
    {/* WISHLIST */}
    <button
-    onClick={() => toggleWishlist(product)}
+    onClick={() => setIsWished((prev) => !prev)}
     className={`h-11 w-11 flex items-center justify-center rounded border transition ${
      isWished
       ? 'bg-red-500 border-red-500 text-white'

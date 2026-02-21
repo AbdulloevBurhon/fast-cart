@@ -1,9 +1,6 @@
-// src/components/product/shared/ProductCard.jsx
-
 import { Eye, Heart } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useCart } from '../../../context/CartContext'
-import { useWishlist } from '../../../context/WishlistContext'
 
 function StarRating({ rating }) {
  return (
@@ -36,10 +33,7 @@ function ProductCard({
  isNew,
  showAddToCart = true
 }) {
- const { addToCart } = useCart()
- const { wishlist, toggleWishlist } = useWishlist()
-
- const isWished = wishlist.some((item) => item.id === id)
+ const [isWished, setIsWished] = useState(false)
 
  const discount = oldPrice
   ? `-${Math.round(((oldPrice - price) / oldPrice) * 100)}%`
@@ -67,7 +61,7 @@ function ProductCard({
      <button
       onClick={(e) => {
        e.preventDefault()
-       toggleWishlist({ id, image, title, price })
+       setIsWished((prev) => !prev)
       }}
       className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center shadow-sm transition-colors hover:bg-[#DB4444] hover:text-white"
      >
@@ -97,7 +91,7 @@ function ProductCard({
       <button
        onClick={(e) => {
         e.preventDefault()
-        addToCart({ id, image, name: title, price })
+        console.log('Add to cart:', { id, title, price })
        }}
        className="w-full bg-gray-200 text-black text-sm font-medium py-2.5 transition-colors hover:bg-[#DB4444] hover:text-white"
       >

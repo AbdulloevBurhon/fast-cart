@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react'
 import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { useProducts } from '../../../context/ProductsContext'
 import Container from '../../ui/Container'
 import { useSearch } from '../hooks/useSearch'
 import Hero from './Hero'
@@ -9,9 +9,12 @@ import Hero from './Hero'
 function HomeTop() {
  const { query, setQuery, handleSearch, handleKeyDown } = useSearch()
  const navigate = useNavigate()
- const { getCategories } = useProducts()
 
- const categories = getCategories()
+ const products = useSelector((state) => state.products.items)
+
+ const categories = useMemo(() => {
+  return [...new Set(products.map((p) => p.category))]
+ }, [products])
 
  // ✅ оптимизированная фильтрация
  const visibleCategories = useMemo(() => {

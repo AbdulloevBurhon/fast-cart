@@ -1,7 +1,8 @@
 // src/components/home/TodayProducts.jsx
+
 import { useMemo, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { useProducts } from '../../../context/ProductsContext'
 import ProductGrid from '../../product/shared/ProductGrid'
 import ArrowButton from '../../ui/ArrowButton'
 import Container from '../../ui/Container'
@@ -9,8 +10,9 @@ import SectionTitle from '../../ui/SectionTitle'
 import { Timer } from './Timer'
 
 function TodayProducts() {
- const { products } = useProducts()
+ const products = useSelector((state) => state.products.items)
  const scrollRef = useRef(null)
+
  // eslint-disable-next-line react-hooks/purity
  const saleEnd = useMemo(() => Date.now() + 328000000, [])
 
@@ -22,7 +24,7 @@ function TodayProducts() {
    behavior: 'smooth'
   })
  }
- //
+
  return (
   <section className="py-14">
    <Container>
@@ -31,23 +33,23 @@ function TodayProducts() {
       <SectionTitle label="Today's" title="Flash Sales" />
       <Timer targetDate={saleEnd} />
      </div>
+
      <div className="flex items-center gap-2 pb-1">
       <ArrowButton direction="left" onClick={() => handleScroll('left')} />
       <ArrowButton direction="right" onClick={() => handleScroll('right')} />
      </div>
     </div>
 
-    {/* ПЕРЕДАЕМ isSlider={true} */}
     <ProductGrid products={products} scrollRef={scrollRef} isSlider={true} />
 
-    {/* Кнопка View All внизу (как на макете) */}
     <div className="flex justify-center mt-10">
-     <NavLink to={'/products'}>
+     <NavLink to="/products">
       <button className="px-12 py-4 bg-[#DB4444] text-white rounded-sm hover:bg-[#c23a3a] transition-all">
        View All Products
       </button>
      </NavLink>
     </div>
+
     <div className="border-b border-gray-200 mt-14" />
    </Container>
   </section>
